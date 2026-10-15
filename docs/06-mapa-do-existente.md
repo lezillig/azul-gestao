@@ -71,25 +71,33 @@ Em ordem de dependência:
 2. **Fila única de pendências**, com perfil aprovador e regra de quem cria ≠
    quem aprova. Os fluxos de multa e folha passam a gerar entradas nela.
 3. **Veículo completo**: campos de compra/venda e documento, status
-   `VENDIDO`, importador da planilha e relatório de divergências contra a
-   Ituran e o SIAT.
+   `VENDIDO`, importador da planilha e relatório de divergências com a
+   Ituran como referência (ADR-008).
 4. **Financiamento por veículo**, importado da planilha.
 5. **Cliente e fornecedor por CNPJ**, ligando `Cliente` ao `OmieParceiro`.
-6. **Contrato operacional e linha**: SLA, reajuste, linhas com horário e
-   veículo/motorista padrão, ligados ao `OmieContrato` e às rotas do SIAT.
+6. **Contrato operacional e linha**, na gestão (ADR-009): SLA, reajuste,
+   linhas com horário e veículo/motorista padrão, ligados ao `OmieContrato`
+   e às rotas do SIAT, e expostos à controladoria em `leitura.ts`.
 7. **Pessoa além do motorista** (monitor, mecânico, administrativo).
 8. **Centro de custo**: decidir se o padrão `V-<placa>` / `C-<contrato>` do
    `docs/02` substitui ou complementa o vínculo por departamento da Omie.
 
+## Decisões tomadas em 15/10/2026
+
+- **Stack**: herdar Next.js + Prisma (ADR-002).
+- **Banco**: dois bancos, um por sistema; a controladoria lê a gestão em
+  somente leitura (ADR-001 revisto). Executar
+  `controladoria/docs/separar-bancos.md` deixa de ser opcional.
+- **Fonte oficial da frota**: Ituran (ADR-008). O relatório de divergências
+  usa a Ituran como referência; SIAT, Sofit, Ticket Log e planilha são
+  comparados contra ela.
+- **Contrato operacional**: na gestão, ligado ao `OmieContrato` (ADR-009).
+
 ## Decisões em aberto
 
-- **Banco**: um só com papéis separados (ADR-001) ou dois, como planeja
-  `controladoria/docs/separar-bancos.md`.
-- **Fonte oficial da frota**: o `CLAUDE.md` diz Ituran; o código da gestão
-  trata o **SIAT** como cadastro correto e corrige a Ituran contra ele.
 - **MCP (ADR-003)**: os clientes TypeScript já encapsulam autenticação e
   paginação. MCP passa a ser só para uso do Claude em conversa?
-- **Onde mora o contrato operacional**: gestão (operação) ou controladoria
-  (já tem `OmieContrato`)?
+- **Centro de custo**: o padrão `V-<placa>` / `C-<contrato>` substitui ou
+  complementa o vínculo por departamento da Omie que a controladoria usa?
 - **Situação de `gestao-embarques` e `gestao-multas`**: as multas parecem
   absorvidas pela gestão (integração LW).

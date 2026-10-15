@@ -36,7 +36,7 @@ vive nos dois sistemas que já rodam em produção, e o código novo entra neles
 | `lezillig/gestao-motoristas` | cadastro mestre, compliance, pessoas/ponto, operação, frota | Next.js 16 + Prisma 6 + PostgreSQL (Neon) na Vercel |
 | `lezillig/controladoria` | financeiro, custos, comercial, simulador | idem; schema `controladoria`, lê a gestão só por `src/lib/gestao/leitura.ts` |
 
-- **Banco**: PostgreSQL no Neon. Um banco com schema por sistema (ADR-001; a separação proposta pela controladoria está em revisão).
+- **Banco**: PostgreSQL no Neon, **um banco por sistema** (ADR-001). A controladoria lê a gestão só por conexão somente leitura em `src/lib/gestao/leitura.ts`; nenhum JOIN entre bancos, nenhuma escrita cruzada. O cadastro mestre e o contrato operacional (ADR-009) têm dono único: a gestão.
 - **Migrações**: Prisma, escritas à mão no repositório dono da tabela. `db/schema.sql` é referência de modelo, não DDL a aplicar.
 - **Jobs/agentes**: rotas de cron da Vercel (`vercel.json`) registradas em `CronExecucao`; ciclos longos conduzidos pelo GitHub Actions, como faz a controladoria. `agents/_template.py` é referência do padrão (`docs/04`), não código a executar.
 - **Integrações**: clientes TypeScript que já existem (TiqueTaque, SIAT, Ituran, Sofit, Ticket Log, LW, Prodesp, ANP na gestão; Omie e BrasilAPI na controladoria). MCP em revisão (ADR-003).
@@ -75,7 +75,7 @@ azul-gestao/
 
 ## Contexto de negócio útil
 
-- Frota de ~200 veículos (vans, micro-ônibus, ônibus), rastreada pela **Ituran** (API disponível). A relação de placas da Ituran é a base oficial da frota.
+- Frota de ~200 veículos (vans, micro-ônibus, ônibus), rastreada pela **Ituran** (API disponível). A relação de placas da Ituran é a base oficial da frota (ADR-008): o que estiver no SIAT, na Sofit ou em planilha e não estiver na Ituran é divergência.
 - ERP **Omie** (financeiro, clientes/fornecedores). Centro de custo deve ser por placa e por contrato.
 - Sistema de **ponto**: TiqueTaque, com API. Motoristas sujeitos à Lei 13.103/2015 (jornada e intervalos).
 - Licenças e órgãos: ARTESP, EMTU/SP, ANTT, CVS (escolar), DETRAN; apólices RC por segmento (fretamento, escolar, cargas).

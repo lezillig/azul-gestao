@@ -49,11 +49,11 @@
 
 ## Decisões de arquitetura (ADRs)
 
-### ADR-001 — Um banco, vários schemas (não um banco por módulo)
-**Contexto**: módulos atuais têm bancos separados; preocupação com performance ao unificar.
-**Decisão**: um PostgreSQL com schema por domínio. Para ~200 veículos, ~300 pessoas e dezenas de contratos, o volume é pequeno (milhões de linhas só em telemetria, e essa fica em tabela própria particionada por mês). O custo real de bancos separados é não conseguir cruzar frota × pessoas × financeiro, que é exatamente o que gera gestão.
-**Consequência**: módulos novos nascem no banco único; módulos existentes migram na Fase 0 (ou ficam como fonte externa via MCP até migrarem).
-**Em revisão (15/10/2026)**: a controladoria tem um plano para ir a um banco próprio (`controladoria/docs/separar-bancos.md`), motivado pela credencial de um sistema alcançar o schema do outro. Alternativa que mantém este ADR: um banco, um papel Postgres por sistema, escrita só no próprio schema e leitura concedida tabela a tabela. Decisão pendente.
+### ADR-001 — Um banco por sistema, nunca um banco por módulo · **revisto em 15/10/2026**
+**Contexto**: a proposta original era um PostgreSQL único com schema por domínio. Na prática a gestão (`public`) e a controladoria (`controladoria`) dividem o mesmo banco no Neon, e a credencial de um sistema alcança o schema do outro. A controladoria já tem um plano para ir a um banco próprio (`controladoria/docs/separar-bancos.md`).
+**Decisão**: **dois bancos**, um por sistema: o da gestão (operação, cadastro mestre, frota, pessoas) e o da controladoria (financeiro, comercial). Dentro de cada sistema, os módulos novos continuam no banco dele — nada de banco por módulo.
+**Como os dois se cruzam**: a controladoria lê a gestão por uma conexão própria, com papel **somente leitura** e consultas explícitas num arquivo só (`src/lib/gestao/leitura.ts`). Nenhum JOIN entre bancos; nenhuma escrita de um sistema no banco do outro. O que um relatório precisar dos dois lados (ex.: margem por contrato = contrato da gestão × lançamentos da controladoria) é montado na controladoria a partir dessas leituras.
+**Consequência**: o cadastro mestre (veículo, pessoa, cliente, contrato) tem dono único — a gestão — e a controladoria referencia por id/chave natural, sem duplicar. Toda tabela nova que a controladoria precise ler entra também em `leitura.ts` e no GRANT do papel somente leitura.
 
 ### ADR-002 — Herdar a stack da gestão e da controladoria (Next.js + Prisma) · **decidido em 15/10/2026**
 **Contexto**: a proposta original era Python (FastAPI + SQLAlchemy + Alembic), "salvo se a controladoria existente impuser outra". A verificação (ver `docs/06-mapa-do-existente.md`) mostrou que a controladoria **e** a gestão de motoristas já rodam em produção em Next.js 16 + Prisma 6 + PostgreSQL (Neon) na Vercel, compartilham o login, e já têm boa parte do cadastro mestre (veículo, motorista, cliente, escala, ponto, abastecimento) e todas as integrações (Omie, Ituran, TiqueTaque, SIAT, Sofit, Ticket Log, LW, Prodesp).
@@ -79,6 +79,15 @@ Este repositório (`azul-gestao`) guarda o **plano**: specs, docs, backlog e dec
 
 ### ADR-006 — Chaves naturais e sem exclusão física
 **Decisão**: placa, CPF, CNPJ e número de contrato são únicos e imutáveis; registros são desativados, nunca apagados.
+
+### ADR-008 — A Ituran é a base oficial da frota · **decidido em 15/10/2026**
+**Contexto**: o código da gestão hoje trata o cadastro do SIAT como correto e corrige as placas que a Ituran reporta erradas (`src/lib/ituran/plateAliases.ts`).
+**Decisão**: a relação de veículos da Ituran define **quais veículos a empresa tem**. Veículo ativo no SIAT, na Sofit, no Ticket Log ou na planilha e ausente da Ituran é divergência a resolver, não veículo válido. A placa é sempre a chave; a correção de grafia de placa (`plateAliases.ts`) continua existindo, mas cada entrada precisa de data e motivo e é revista a cada renovação de frota.
+**Consequência**: o relatório de divergências da Fase 0 usa a Ituran como referência e lista, de cada outra fonte, o que sobra e o que falta.
+
+### ADR-009 — O contrato operacional mora na gestão · **decidido em 15/10/2026**
+**Decisão**: `contrato` e `linha` (SLA, reajuste, horários, veículo e motorista padrão) são tabelas da gestão, ao lado de veículo, escala e viagem. O contrato guarda a ligação com o `OmieContrato` (código da Omie) e com o cliente por CNPJ; a controladoria lê o contrato da gestão para faturamento e margem.
+**Consequência**: a rota deixa de ser só texto em `Escala.routeName`; a escala do SIAT passa a casar com uma linha cadastrada.
 
 ### ADR-007 — Telemetria bruta separada de eventos de negócio
 **Decisão**: posições da Ituran entram em `operacao.posicao` (particionada por mês, retenção 13 meses). Agentes derivam **eventos** (`operacao.evento_viagem`: início, fim, atraso, desvio) que são o que relatórios e SLA usam.

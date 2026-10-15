@@ -10,15 +10,16 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 - [x] Banco, migrações e deploy: já existem (Neon, Prisma, Vercel).
 - [ ] Trilha de auditoria genérica (antes/depois por tabela) na gestão.
 - [ ] Fila única de pendências com perfil aprovador (quem cria ≠ quem aprova); multas e folha passam a gerar entradas nela.
-- [ ] `Vehicle` completo (renavam, chassi, categoria de uso, compra/venda, status `VENDIDO`); importar "CONTROLE INFORMAÇÕES GERAIS" (FROTA ATIVA + VENDIDOS); relatório de divergências contra Ituran e SIAT.
+- [ ] `Vehicle` completo (renavam, chassi, categoria de uso, compra/venda, status `VENDIDO`); importar "CONTROLE INFORMAÇÕES GERAIS" (FROTA ATIVA + VENDIDOS); relatório de divergências com a Ituran como referência (ADR-008).
 - [ ] Financiamento por veículo, importado de "Consórcios e Financiamentos".
 - [ ] Cliente e fornecedor por CNPJ, ligando `Cliente` (gestão) ao `OmieParceiro` (controladoria).
-- [ ] Contrato operacional e linha (SLA, reajuste, horário, veículo e motorista padrão), ligados ao `OmieContrato` e às rotas do SIAT.
+- [ ] Contrato operacional e linha na gestão (ADR-009): SLA, reajuste, horário, veículo e motorista padrão, ligados ao `OmieContrato` e às rotas do SIAT.
+- [ ] Separar os bancos (ADR-001): executar `controladoria/docs/separar-bancos.md`, com papel somente leitura da controladoria no banco da gestão.
 - [ ] Cadastro de pessoa além do motorista (monitor, mecânico, administrativo).
 - [ ] Centro de custo por veículo e contrato, alinhado ao `CentroCusto` que a controladoria já mantém.
 - [x] Clientes de Omie, Ituran e ponto (TiqueTaque): já existem em TypeScript. MCP em revisão (ADR-003).
 
-**Pronto quando**: toda placa ativa existe no banco e bate com a Ituran e o SIAT (divergências listadas); toda alteração de cadastro aparece na trilha com antes/depois; uma pendência pode ser criada, aprovada por outra pessoa e aparece na trilha.
+**Pronto quando**: toda placa ativa da Ituran existe em `Vehicle`, e o que sobra no SIAT, Sofit ou planilha está listado como divergência; toda alteração de cadastro aparece na trilha com antes/depois; uma pendência pode ser criada, aprovada por outra pessoa e aparece na trilha.
 
 ## Fase 1 — Compliance e vencimentos (1 semana) · `specs/02-compliance-vencimentos.md`
 
