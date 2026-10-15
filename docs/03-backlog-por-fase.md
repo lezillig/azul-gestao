@@ -4,20 +4,21 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 
 ## Fase 0 — Fundação (2–3 semanas) · `specs/01-cadastro-mestre.md`
 
-- [ ] Decidir stack definitiva (ADR-002): verificar a controladoria existente.
-- [ ] `db/schema.sql` aplicado; Alembic inicializado; `app/core/` (config, db, audit).
-- [ ] Migrar planilha "CONTROLE INFORMAÇÕES GERAIS" (FROTA ATIVA + VENDIDOS) → `cadastro.veiculo`; relatório de divergências vs base Ituran.
-- [ ] Migrar "Consórcios e Financiamentos" → `frota.financiamento`.
-- [ ] Cadastro de pessoas a partir do sistema de ponto/motoristas → `cadastro.pessoa`.
-- [ ] Contratos e linhas ativos → `cadastro.contrato`, `cadastro.linha`.
-- [ ] `centro_custo` gerado para cada veículo e contrato, e espelhado na Omie.
-- [ ] MCP `omie` (tools: listar_contas_pagar, listar_contas_receber, consultar_fornecedor, consultar_cliente, incluir_conta_pagar [escrita, logada]).
-- [ ] MCP `ituran` (tools: listar_veiculos, posicoes, odometro_atual, rotas_cadastradas, eventos).
-- [ ] MCP `ponto` (tools: marcacoes_por_data, funcionarios).
-- [ ] Tela/CLI de pendências (`auditoria.pendencia`) — aprovar/rejeitar.
-- [ ] `agents/base.py` + `agents/_template.py` conforme `docs/04-padrao-de-agentes.md`.
+> Revisada em 15/10/2026: boa parte desta fase já existe na gestão e na controladoria. Situação item a item em `docs/06-mapa-do-existente.md`.
 
-**Pronto quando**: toda placa ativa existe no banco e bate com a Ituran; as três tools MCP de leitura respondem; um `pendencia` pode ser criada e aprovada com log.
+- [x] Decidir stack definitiva (ADR-002): herdar Next.js + Prisma da gestão e da controladoria.
+- [x] Banco, migrações e deploy: já existem (Neon, Prisma, Vercel).
+- [ ] Trilha de auditoria genérica (antes/depois por tabela) na gestão.
+- [ ] Fila única de pendências com perfil aprovador (quem cria ≠ quem aprova); multas e folha passam a gerar entradas nela.
+- [ ] `Vehicle` completo (renavam, chassi, categoria de uso, compra/venda, status `VENDIDO`); importar "CONTROLE INFORMAÇÕES GERAIS" (FROTA ATIVA + VENDIDOS); relatório de divergências contra Ituran e SIAT.
+- [ ] Financiamento por veículo, importado de "Consórcios e Financiamentos".
+- [ ] Cliente e fornecedor por CNPJ, ligando `Cliente` (gestão) ao `OmieParceiro` (controladoria).
+- [ ] Contrato operacional e linha (SLA, reajuste, horário, veículo e motorista padrão), ligados ao `OmieContrato` e às rotas do SIAT.
+- [ ] Cadastro de pessoa além do motorista (monitor, mecânico, administrativo).
+- [ ] Centro de custo por veículo e contrato, alinhado ao `CentroCusto` que a controladoria já mantém.
+- [x] Clientes de Omie, Ituran e ponto (TiqueTaque): já existem em TypeScript. MCP em revisão (ADR-003).
+
+**Pronto quando**: toda placa ativa existe no banco e bate com a Ituran e o SIAT (divergências listadas); toda alteração de cadastro aparece na trilha com antes/depois; uma pendência pode ser criada, aprovada por outra pessoa e aparece na trilha.
 
 ## Fase 1 — Compliance e vencimentos (1 semana) · `specs/02-compliance-vencimentos.md`
 

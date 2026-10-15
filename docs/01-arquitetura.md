@@ -53,15 +53,21 @@
 **Contexto**: módulos atuais têm bancos separados; preocupação com performance ao unificar.
 **Decisão**: um PostgreSQL com schema por domínio. Para ~200 veículos, ~300 pessoas e dezenas de contratos, o volume é pequeno (milhões de linhas só em telemetria, e essa fica em tabela própria particionada por mês). O custo real de bancos separados é não conseguir cruzar frota × pessoas × financeiro, que é exatamente o que gera gestão.
 **Consequência**: módulos novos nascem no banco único; módulos existentes migram na Fase 0 (ou ficam como fonte externa via MCP até migrarem).
+**Em revisão (15/10/2026)**: a controladoria tem um plano para ir a um banco próprio (`controladoria/docs/separar-bancos.md`), motivado pela credencial de um sistema alcançar o schema do outro. Alternativa que mantém este ADR: um banco, um papel Postgres por sistema, escrita só no próprio schema e leitura concedida tabela a tabela. Decisão pendente.
 
-### ADR-002 — Stack Python/FastAPI, salvo se a controladoria existente impuser outra
-**Contexto**: já existe conector PHP da Omie e um sistema de controladoria construído no Claude Code.
-**Decisão**: a plataforma nova usa Python (FastAPI + SQLAlchemy + Alembic) porque servidores MCP e agentes já estão nessa linguagem. **Antes da Fase 0, verificar a stack da controladoria**: se viável, trazê-la para este repositório como módulo `financeiro`; se não, mantê-la como sistema externo lendo/escrevendo no mesmo Postgres.
-**Consequência**: evitar duas stacks concorrentes para o mesmo domínio.
+### ADR-002 — Herdar a stack da gestão e da controladoria (Next.js + Prisma) · **decidido em 15/10/2026**
+**Contexto**: a proposta original era Python (FastAPI + SQLAlchemy + Alembic), "salvo se a controladoria existente impuser outra". A verificação (ver `docs/06-mapa-do-existente.md`) mostrou que a controladoria **e** a gestão de motoristas já rodam em produção em Next.js 16 + Prisma 6 + PostgreSQL (Neon) na Vercel, compartilham o login, e já têm boa parte do cadastro mestre (veículo, motorista, cliente, escala, ponto, abastecimento) e todas as integrações (Omie, Ituran, TiqueTaque, SIAT, Sofit, Ticket Log, LW, Prodesp).
+**Decisão**: não criar um terceiro sistema. O código novo entra nos dois repositórios que já existem:
+- `lezillig/gestao-motoristas` — cadastro mestre, compliance, pessoas/ponto, operação e frota;
+- `lezillig/controladoria` — financeiro, custos, comercial e simulador.
 
-### ADR-003 — Integrações sempre via MCP
+Este repositório (`azul-gestao`) guarda o **plano**: specs, docs, backlog e decisões. `db/schema.sql` e `agents/_template.py` ficam como referência de modelo, não como código a executar; o que faltar vira migração Prisma no repositório dono da tabela.
+**Consequência**: uma linguagem, um login, um deploy por sistema. Python só entra se um caso concreto exigir (ex.: biblioteca sem equivalente em TypeScript), como exceção registrada aqui.
+
+### ADR-003 — Integrações sempre via MCP · **em revisão (15/10/2026)**
 **Decisão**: nenhum módulo chama API externa diretamente; chama a tool do servidor MCP correspondente. O servidor encapsula autenticação, paginação, rate limit e normalização.
 **Consequência**: o mesmo conector serve a API, os agentes e o Claude em conversa; trocar fornecedor (ex.: outro rastreador) muda um lugar só.
+**Revisão**: os clientes TypeScript que já existem (`src/lib/ituran/`, `src/lib/tiquetaque/`, `src/lib/omie/` etc.) já encapsulam autenticação, paginação e normalização, e são o "um lugar só". Proposta: o código continua chamando esses clientes; servidor MCP só onde o Claude precisar consultar o sistema em conversa, e como casca fina sobre o mesmo cliente.
 
 ### ADR-004 — Regras são código; LLM só para exceção e redação
 **Decisão**: comparar odômetro, detectar vencimento, validar NF contra OS, conferir jornada: tudo em SQL/Python determinístico e testável. O LLM entra para (a) interpretar documentos não estruturados (PDF de NF, e-mail), (b) classificar e priorizar exceções, (c) redigir mensagens e relatórios.
@@ -86,4 +92,4 @@
 
 ## Ambientes
 
-- `dev` (local, banco Docker), `prod` (servidor da empresa ou VPS; a definir). Backups diários do Postgres com retenção 30 dias; teste de restauração mensal (isto também é um controle).
+- `dev` (local), `prod` na Vercel com Postgres no Neon — o arranjo que a gestão e a controladoria já usam. Backups diários do Postgres com retenção 30 dias; teste de restauração mensal (isto também é um controle).
