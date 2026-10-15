@@ -51,7 +51,7 @@ Legenda: ✅ existe · 🟡 existe em parte · ❌ falta
 | Divergência planilha × Ituran | 🟡 | **Relatório Ituran × cadastro × cartões Ticket Log e importador da planilha "CONTROLE INFORMAÇÕES GERAIS" implementados no PR lezillig/gestao-motoristas#5, aguardando merge.** O importador só preenche campo vazio, não repete renavam/chassi, e manda baixa de veículo ativo para a fila de pendências. Conferido com a planilha de agosto/2026 (215 ativos, 86 vendidos). Falta: rodar em produção com a planilha atualizada e resolver os achados dela (ver abaixo). |
 | `frota.financiamento` | 🟡 | Controladoria tem financiamentos no `BalancoPatrimonial`, sem vínculo por veículo. Falta o importador de "Consórcios e Financiamentos" por placa. |
 | `cadastro.pessoa` | 🟡 | `Driver` com `cpf` único e validado (`src/lib/cpf.ts`), alimentado pelo TiqueTaque, SIAT e Sofit. Só cobre motoristas: **monitor, mecânico e administrativo não têm cadastro**. |
-| `cadastro.cliente` | 🟡 | `Cliente` na gestão é chaveado por **nome**, sem CNPJ. Os clientes com CNPJ estão em `OmieParceiro` na controladoria. Falta casar os dois pelo CNPJ. |
+| `cadastro.cliente` | 🟡 | **CNPJ (com validação do formato alfanumérico de jul/2026), razão social e tipo privado/público implementados no PR lezillig/gestao-motoristas#5, aguardando merge.** Falta: a controladoria casar `Cliente` com `OmieParceiro` pelo CNPJ (em `leitura.ts`) e preencher o CNPJ dos clientes existentes. |
 | `cadastro.fornecedor` | 🟡 | Só como `OmieParceiro` (controladoria). Não há cadastro na gestão. |
 | `cadastro.contrato` | 🟡 | `OmieContrato` (controladoria) espelha o contrato de venda da Omie. **Não há contrato operacional** com SLA, linhas e reajuste. |
 | `cadastro.linha` / `ponto_parada` | ❌ | A rota existe só como texto em `Escala.routeName` e `Escala.clientName`, vindos do SIAT. |
@@ -98,6 +98,23 @@ Da primeira leitura de "CONTROLE INFORMAÇÕES GERAIS" pelo importador:
 - **18 veículos com categoria "UNIDADE MÓVEL"**, que não é fretamento,
   escolar nem cargas: decidir se vira categoria própria.
 - Todos os 215 renavams da FROTA ATIVA passaram na verificação do dígito.
+
+### Planilha atualizada (outubro/2026), comparada com a de agosto
+
+- **Corrigido**: os 3 chassis curtos da FROTA ATIVA (EEJ1210, FMU4J83,
+  FQX0H73) e as 29 vendas sem data em VENDIDOS.
+- **Entraram** na FROTA ATIVA: UPK0G59 e UQQ5E77.
+- **Novo problema — renavam repetido**: GBT9I12 passou a ter o renavam
+  01350943948, que é o da FJO0F81 (em agosto era 01349893193). As duas são
+  Ford Transit da mesma compra, com notas fiscais seguidas; parece cópia de
+  linha. O importador não grava o renavam repetido.
+- **Novo problema**: EFV4194 está na FROTA ATIVA e também em VENDIDOS, e o
+  chassi difere em um dígito entre as duas abas (…E2133335 × …E2123335).
+- **Linha sem placa** (FROTA ATIVA, linha 217): Sprinter comprada em
+  24/06/2026, ainda sem placa na planilha; ignorada até ter placa.
+- **Continuam**: GAM3671 × BAM2H50 com o mesmo renavam e chassi; EEJ1210
+  ativa e vendida; EZO1110 duas vezes em VENDIDOS; chassi curto de GKH2607;
+  18 "UNIDADE MÓVEL" sem categoria.
 
 ## Decisões tomadas em 15/10/2026
 
