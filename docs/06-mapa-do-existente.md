@@ -48,7 +48,7 @@ Legenda: ✅ existe · 🟡 existe em parte · ❌ falta
 | Schema, migrações, `app/core` | ✅ | Migrações Prisma escritas à mão nos dois repositórios. Não há Alembic nem FastAPI. |
 | `auditoria.log` genérico | 🟡 | **Implementado em 15/10/2026 no PR lezillig/gestao-motoristas#5, aguardando merge.** Gatilho no Postgres grava antes/depois em `RegistroAuditoria` (somente-inclusão) para veículo, motorista, cliente, sindicato, usuário, empresa e convenção; telas informam o autor por `comAutor`; consulta em `/auditoria`. Falta: os syncs (SIAT, Sofit, Prodesp, TiqueTaque) se identificarem com `autorDeProcesso`, e estender o gatilho às tabelas novas da Fase 0. |
 | `cadastro.veiculo` | 🟡 | `Vehicle` com `plate` única e normalizada sem hífen (`src/lib/plate.ts`, já trata Mercosul × antiga). **Campos patrimoniais (renavam, chassi, ano do modelo, categoria de uso, compra e venda) implementados em 15/10/2026 no PR lezillig/gestao-motoristas#5, aguardando merge.** Vendido = `INATIVO` + `dataVenda` (sem status `VENDIDO`, que furaria os filtros de escala). Falta: fornecedor da compra (depende do cadastro de fornecedor por CNPJ). |
-| Divergência planilha × Ituran | 🟡 | **Relatório Ituran × cadastro × cartões Ticket Log implementado no PR #5** (`/cadastros/veiculos/divergencias` + CSV), com a Ituran como referência (ADR-008). Falta: importador da planilha "CONTROLE INFORMAÇÕES GERAIS", para a planilha entrar na comparação. |
+| Divergência planilha × Ituran | 🟡 | **Relatório Ituran × cadastro × cartões Ticket Log e importador da planilha "CONTROLE INFORMAÇÕES GERAIS" implementados no PR lezillig/gestao-motoristas#5, aguardando merge.** O importador só preenche campo vazio, não repete renavam/chassi, e manda baixa de veículo ativo para a fila de pendências. Conferido com a planilha de agosto/2026 (215 ativos, 86 vendidos). Falta: rodar em produção com a planilha atualizada e resolver os achados dela (ver abaixo). |
 | `frota.financiamento` | 🟡 | Controladoria tem financiamentos no `BalancoPatrimonial`, sem vínculo por veículo. Falta o importador de "Consórcios e Financiamentos" por placa. |
 | `cadastro.pessoa` | 🟡 | `Driver` com `cpf` único e validado (`src/lib/cpf.ts`), alimentado pelo TiqueTaque, SIAT e Sofit. Só cobre motoristas: **monitor, mecânico e administrativo não têm cadastro**. |
 | `cadastro.cliente` | 🟡 | `Cliente` na gestão é chaveado por **nome**, sem CNPJ. Os clientes com CNPJ estão em `OmieParceiro` na controladoria. Falta casar os dois pelo CNPJ. |
@@ -81,6 +81,23 @@ Em ordem de dependência:
 7. **Pessoa além do motorista** (monitor, mecânico, administrativo).
 8. **Centro de custo**: decidir se o padrão `V-<placa>` / `C-<contrato>` do
    `docs/02` substitui ou complementa o vínculo por departamento da Omie.
+
+## Achados da planilha de controle (agosto/2026)
+
+Da primeira leitura de "CONTROLE INFORMAÇÕES GERAIS" pelo importador:
+
+- **Renavam e chassi repetidos em duas placas**: GAM3671 (FROTA ATIVA, contrato
+  "CARRO A VENDA") e BAM2H50 (VENDIDOS, vendido em 19/02/2026) têm o mesmo
+  renavam 01167718736 e o mesmo chassi. É o mesmo veículo físico; uma das
+  linhas está errada ou houve troca de placa.
+- **EEJ1210** está ao mesmo tempo na FROTA ATIVA e em VENDIDOS.
+- **EZO1110** aparece duas vezes em VENDIDOS.
+- **4 chassis com 16 caracteres** (falta um): EEJ1210, FMU4J83, FQX0H73
+  (FROTA ATIVA) e GKH2607 (VENDIDOS).
+- **29 vendas sem data** e 64 sem valor na aba VENDIDOS.
+- **18 veículos com categoria "UNIDADE MÓVEL"**, que não é fretamento,
+  escolar nem cargas: decidir se vira categoria própria.
+- Todos os 215 renavams da FROTA ATIVA passaram na verificação do dígito.
 
 ## Decisões tomadas em 15/10/2026
 
