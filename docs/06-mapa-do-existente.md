@@ -46,7 +46,7 @@ Legenda: ✅ existe · 🟡 existe em parte · ❌ falta
 |---|---|---|
 | Decidir stack (ADR-002) | ✅ | Decidido em 15/10/2026: herdar Next.js + Prisma. Ver ADR-002. |
 | Schema, migrações, `app/core` | ✅ | Migrações Prisma escritas à mão nos dois repositórios. Não há Alembic nem FastAPI. |
-| `auditoria.log` genérico | ❌ | Há trilhas pontuais: `TimeClockCorrection` (antes/depois do ponto), `FechamentoEvento` (folha), `ControladoriaEventLog`. Não há log de antes/depois para todo cadastro. |
+| `auditoria.log` genérico | 🟡 | **Implementado em 15/10/2026 no branch `claude/laughing-gauss-0sq0c5` da gestão, aguardando merge.** Gatilho no Postgres grava antes/depois em `RegistroAuditoria` (somente-inclusão) para veículo, motorista, cliente, sindicato, usuário, empresa e convenção; telas informam o autor por `comAutor`; consulta em `/auditoria`. Falta: os syncs (SIAT, Sofit, Prodesp, TiqueTaque) se identificarem com `autorDeProcesso`, e estender o gatilho às tabelas novas da Fase 0. |
 | `cadastro.veiculo` | 🟡 | `Vehicle` com `plate` única e normalizada sem hífen (`src/lib/plate.ts`, já trata Mercosul × antiga). **Faltam** renavam, chassi, ano do modelo, categoria de uso (fretamento/escolar/cargas), compra e venda (data, valor, fornecedor). `VehicleStatus` não tem `VENDIDO` (só ATIVO, MANUTENCAO, INATIVO). |
 | Divergência planilha × Ituran | 🟡 | O cliente da Ituran já lista veículos e corrige placas erradas (`plateAliases.ts`). Falta o importador da planilha "CONTROLE INFORMAÇÕES GERAIS" e o relatório de divergências. |
 | `frota.financiamento` | 🟡 | Controladoria tem financiamentos no `BalancoPatrimonial`, sem vínculo por veículo. Falta o importador de "Consórcios e Financiamentos" por placa. |
