@@ -1,0 +1,58 @@
+# Thresholds e destinatários dos agentes. Ajustar aqui, não no código.
+# Revisão trimestral com base em falsos positivos (specs/08).
+
+geral:
+  fuso: America/Sao_Paulo
+  email_admin: ["ti@azulmob.com.br"]
+
+vencimentos:
+  antecedencia_padrao_dias: [60, 30, 7]
+  destinatarios:
+    pessoa: ["rh@azulmob.com.br"]
+    veiculo: ["frota@azulmob.com.br"]
+    empresa: ["financeiro@azulmob.com.br"]
+
+ponto_erros:
+  tolerancia_fora_escala_min: 120
+  reincidencia_erros_30d: 3
+  destinatarios: ["rh@azulmob.com.br"]
+
+jornada:
+  limite_diario_h: 8
+  extra_max_h: 2
+  intervalo_min_h: 1
+  interjornada_h: 11
+  descanso_semanal_h: 35
+  direcao_continua_max_h: 5.5
+
+monitor_rotas:
+  intervalo_min: 5
+  atraso_min: 10
+  desvio_metros: 300
+  parada_nao_prevista_min: 5
+  raio_ponto_metros: 100
+  destinatarios: ["operacao@azulmob.com.br"]
+
+preventiva:
+  margem_km: 500
+  margem_dias: 10
+
+combustivel:
+  desvio_pct: 15
+  media_movel_semanas: 8
+
+multas_prazos:
+  avisos_dias: [7, 3, 1]
+
+radar_pncp:
+  palavras_chave: ["fretamento", "transporte escolar", "transporte de passageiros", "locação de veículos com motorista", "locação de ônibus", "locação de van"]
+  ufs: ["SP"]
+  destinatarios: ["comercial@azulmob.com.br"]
+
+reajustes:
+  antecedencia_dias: 60
+  vigencias_avisos_dias: [180, 90, 30]
+
+relatorio_semanal:
+  cron: "0 7 * * 1"
+  destinatarios: ["diretoria@azulmob.com.br"]
