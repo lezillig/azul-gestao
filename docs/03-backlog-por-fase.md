@@ -5,15 +5,17 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 ## Fase 0 — Fundação (2–3 semanas) · `specs/01-cadastro-mestre.md`
 
 > Revisada em 15/10/2026: boa parte desta fase já existe na gestão e na controladoria. Situação item a item em `docs/06-mapa-do-existente.md`.
+>
+> 16/10/2026: PR lezillig/gestao-motoristas#5 em produção (trilha, pendências, veículo com ficha por área — ADR-010 —, planilhas de controle e de financiamentos, cliente por CNPJ, contrato e linha).
 
 - [x] Decidir stack definitiva (ADR-002): herdar Next.js + Prisma da gestão e da controladoria.
 - [x] Banco, migrações e deploy: já existem (Neon, Prisma, Vercel).
-- [ ] Trilha de auditoria genérica (antes/depois por tabela) na gestão.
-- [ ] Fila única de pendências com perfil aprovador (quem cria ≠ quem aprova); multas e folha passam a gerar entradas nela.
-- [ ] `Vehicle` completo (renavam, chassi, categoria de uso, compra/venda, status `VENDIDO`); importar "CONTROLE INFORMAÇÕES GERAIS" (FROTA ATIVA + VENDIDOS); relatório de divergências com a Ituran como referência (ADR-008).
-- [ ] Financiamento por veículo, importado de "Consórcios e Financiamentos".
-- [ ] Cliente e fornecedor por CNPJ, ligando `Cliente` (gestão) ao `OmieParceiro` (controladoria).
-- [ ] Contrato operacional e linha na gestão (ADR-009): SLA, reajuste, horário, veículo e motorista padrão, ligados ao `OmieContrato` e às rotas do SIAT.
+- [x] Trilha de auditoria genérica (antes/depois por tabela) na gestão.
+- [x] Fila única de pendências com perfil aprovador (quem cria ≠ quem aprova); multas e folha passam a gerar entradas nela.
+- [x] `Vehicle` completo (renavam, chassi, categoria de uso, compra/venda, status `VENDIDO`); importar "CONTROLE INFORMAÇÕES GERAIS" (FROTA ATIVA + VENDIDOS); relatório de divergências com a Ituran como referência (ADR-008).
+- [x] Financiamento por veículo, importado de "Consórcios e Financiamentos".
+- [ ] Cliente e fornecedor por CNPJ (cliente feito em 16/10/2026; falta fornecedor e o casamento com o `OmieParceiro` na controladoria), ligando `Cliente` (gestão) ao `OmieParceiro` (controladoria).
+- [x] Contrato operacional e linha na gestão (ADR-009): SLA, reajuste, horário, veículo e motorista padrão, ligados ao `OmieContrato` e às rotas do SIAT.
 - [ ] Separar os bancos (ADR-001): executar `controladoria/docs/separar-bancos.md`, com papel somente leitura da controladoria no banco da gestão.
 - [ ] Cadastro de pessoa além do motorista (monitor, mecânico, administrativo).
 - [ ] Centro de custo por veículo e contrato, alinhado ao `CentroCusto` que a controladoria já mantém.
