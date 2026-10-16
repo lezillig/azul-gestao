@@ -50,7 +50,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 
 - [ ] `plano_manutencao` por tipo de veículo; **agente `preventiva`** (km da Ituran × último serviço) → OS sugerida.
 - [ ] Importação de abastecimentos (cartão/planilha); **agente `combustivel`**: consumo km/l por veículo e motorista, desvio > 15% da média → pendência.
-- [ ] Multas: cadastro, prazo de indicação de condutor; **agente `multas_prazos`**.
+- [x] Multas: cadastro e indicação de condutor já vinham da LW; **agente `multas_prazos`** (diário, `/api/cron/multas-prazos`): pendência para o gestor a 7/3/1 dias do prazo de indicação, fechada por quem envia a indicação. Falta: prazo de recurso (a LW não traz em coluna) e desconto em folha → RH.
 - [ ] Pneus (fase 4b, opcional no início).
 
 ## Fase 5 — Financeiro e controladoria (3 semanas) · `specs/06-custos-controladoria.md`
