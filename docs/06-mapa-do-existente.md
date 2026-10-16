@@ -49,7 +49,7 @@ Legenda: ✅ existe · 🟡 existe em parte · ❌ falta
 | `auditoria.log` genérico | 🟡 | **Implementado em 15/10/2026 no PR lezillig/gestao-motoristas#5, aguardando merge.** Gatilho no Postgres grava antes/depois em `RegistroAuditoria` (somente-inclusão) para veículo, motorista, cliente, sindicato, usuário, empresa e convenção; telas informam o autor por `comAutor`; consulta em `/auditoria`. Falta: os syncs (SIAT, Sofit, Prodesp, TiqueTaque) se identificarem com `autorDeProcesso`, e estender o gatilho às tabelas novas da Fase 0. |
 | `cadastro.veiculo` | 🟡 | `Vehicle` com `plate` única e normalizada sem hífen (`src/lib/plate.ts`, já trata Mercosul × antiga). **Campos patrimoniais (renavam, chassi, ano do modelo, categoria de uso, compra e venda) implementados em 15/10/2026 no PR lezillig/gestao-motoristas#5, aguardando merge.** Vendido = `INATIVO` + `dataVenda` (sem status `VENDIDO`, que furaria os filtros de escala). Falta: fornecedor da compra (depende do cadastro de fornecedor por CNPJ). |
 | Divergência planilha × Ituran | 🟡 | **Relatório Ituran × cadastro × cartões Ticket Log e importador da planilha "CONTROLE INFORMAÇÕES GERAIS" implementados no PR lezillig/gestao-motoristas#5, aguardando merge.** O importador só preenche campo vazio, não repete renavam/chassi, e manda baixa de veículo ativo para a fila de pendências. Conferido com a planilha de agosto/2026 (215 ativos, 86 vendidos). Falta: rodar em produção com a planilha atualizada e resolver os achados dela (ver abaixo). |
-| `frota.financiamento` | 🟡 | Controladoria tem financiamentos no `BalancoPatrimonial`, sem vínculo por veículo. Falta o importador de "Consórcios e Financiamentos" por placa. |
+| `frota.financiamento` | 🟡 | **`Financiamento` (contrato de CDC ou cota de consórcio) e `FinanciamentoVeiculo` (rateio por placa) com importador da planilha "Consórcios e Financiamentos" implementados em 16/10/2026 no PR lezillig/gestao-motoristas#5, aguardando merge.** Conferido com a posição de 31/08/2026: 496 contratos e cotas (284 em aberto, R$ 955.890,08/mês de parcela, R$ 22,55 mi de saldo), 8 de 12 bancos batendo com o Controle Geral. Falta: a controladoria ler por `leitura.ts` (hoje tem financiamentos só no `BalancoPatrimonial`) e o capital de giro, que não é por veículo. |
 | `cadastro.pessoa` | 🟡 | `Driver` com `cpf` único e validado (`src/lib/cpf.ts`), alimentado pelo TiqueTaque, SIAT e Sofit. Só cobre motoristas: **monitor, mecânico e administrativo não têm cadastro**. |
 | `cadastro.cliente` | 🟡 | **CNPJ (com validação do formato alfanumérico de jul/2026), razão social e tipo privado/público implementados no PR lezillig/gestao-motoristas#5, aguardando merge.** Falta: a controladoria casar `Cliente` com `OmieParceiro` pelo CNPJ (em `leitura.ts`) e preencher o CNPJ dos clientes existentes. |
 | `cadastro.fornecedor` | 🟡 | Só como `OmieParceiro` (controladoria). Não há cadastro na gestão. |
@@ -135,3 +135,29 @@ Da primeira leitura de "CONTROLE INFORMAÇÕES GERAIS" pelo importador:
   complementa o vínculo por departamento da Omie que a controladoria usa?
 - **Situação de `gestao-embarques` e `gestao-multas`**: as multas parecem
   absorvidas pela gestão (integração LW).
+
+## Achados da planilha "Consórcios e Financiamentos" (posição de 31/08/2026)
+
+Encontrados na primeira importação; nenhum deles é corrigido pelo sistema.
+
+- **O resumo (Controle Geral) não bate com as abas em 4 casos**: CDC Moneo
+  (10 contratos em aberto na aba contra 8 no resumo — os dois a mais,
+  745090 e 745081, têm data final em 17/11/2025 e ainda 4 parcelas);
+  consórcio Banco do Brasil (14 contra 11: um segundo bloco de 3 cotas sem
+  título); consórcio Bradesco (15 contra 13); consórcio Mercabenco (parcela
+  de R$ 9.714,03 na aba contra R$ 12.286,08 no resumo).
+- **Tabelas dinâmicas desatualizadas** no meio das abas (no Bradesco, R$
+  197.036,40 de saldo por placa contra R$ 188.977,24 nas linhas). O
+  importador não lê nenhuma.
+- **Rateio que não fecha** em dois CDC Moneo (848239 e 855120): o saldo por
+  placa soma mais que o saldo do contrato — a placa de garantia (EXV1773,
+  em três contratos) entra com a mesma parte das outras.
+- **15 cotas contempladas com o bem sem placa** (9 na CNP, 6 no Santander) e
+  **3 CDC sem placa** (os 2 da RCI, de agosto, e um Stellantis com a placa
+  `V44EAAB`, fora do formato).
+- **Chassi digitado errado**: GHV1G72 aparece na CNP com
+  `9V8VBYHERA001475` (falta um V).
+- O título "QUITADOS" da CNP diz **"solicitar crédito 60 dias após a
+  quitação da cota"** e o do Itaú, **"gravame - baixa automática"**: duas
+  rotinas que hoje dependem de alguém lembrar.
+
