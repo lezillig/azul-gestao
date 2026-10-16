@@ -45,7 +45,7 @@ vive nos dois sistemas que já rodam em produção, e o código novo entra neles
 
 ## Regras de ouro (não negociáveis)
 
-1. **Chaves naturais**: `placa` (veículo), `cpf` (pessoa), `cnpj` (cliente/fornecedor), `numero_contrato`. Toda tabela de domínio referencia o cadastro mestre por FK; nada de duplicar nome de motorista ou placa em texto livre.
+1. **Chaves naturais**: `chassi` (veículo — a placa é opcional até o emplacamento e pode mudar; ADR-010), `cpf` (pessoa), `cnpj` (cliente/fornecedor), `numero_contrato`. Toda tabela de domínio referencia o cadastro mestre por FK; nada de duplicar nome de motorista ou placa em texto livre.
 2. **Sem exclusão física** de registros de domínio: usar `ativo`/`data_baixa`. Histórico é parte do controle.
 3. **Tudo que altera dado passa pela trilha de auditoria** (quem, quando, tabela, antes/depois). O helper genérico ainda não existe na gestão — é a primeira lacuna da Fase 0 (`docs/06`).
 4. **Agentes nunca executam ação financeira ou trabalhista sozinhos**: geram uma `pendencia` com status `aguardando_aprovacao`. Alertas e e-mails informativos podem ser automáticos.

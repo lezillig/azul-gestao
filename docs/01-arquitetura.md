@@ -85,6 +85,10 @@ Este repositório (`azul-gestao`) guarda o **plano**: specs, docs, backlog e dec
 **Decisão**: a relação de veículos da Ituran define **quais veículos a empresa tem**. Veículo ativo no SIAT, na Sofit, no Ticket Log ou na planilha e ausente da Ituran é divergência a resolver, não veículo válido. A placa é sempre a chave; a correção de grafia de placa (`plateAliases.ts`) continua existindo, mas cada entrada precisa de data e motivo e é revista a cada renovação de frota.
 **Consequência**: o relatório de divergências da Fase 0 usa a Ituran como referência e lista, de cada outra fonte, o que sobra e o que falta.
 
+### ADR-010 — Cadastro único do veículo, com ficha por área · **decidido em 16/10/2026**
+**Decisão**: um só registro do veículo, dividido em seções com área dona: Aquisição (Financeiro: nota fiscal, anos, chassi, compra, venda, financiamento, adaptações), Frota (placa, renavam, lugares, tipo, prefixo) e Documentação (tipo de operação, licenças, apólice, CRLV). Cada área edita a sua seção e vê o resto; valores só para Financeiro, Gestor e Administrador. O veículo nasce na compra, pelo chassi; **a chave natural passa a ser o chassi** e a placa é opcional até o emplacamento.
+**Consequência**: perfis `FINANCEIRO`, `FROTA` e `DOCUMENTACAO` na gestão; integrações que só conhecem placa ignoram veículo sem placa; "apto a operar" é calculado da ficha. O mesmo desenho vale para as próximas fichas (motorista).
+
 ### ADR-009 — O contrato operacional mora na gestão · **decidido em 15/10/2026**
 **Decisão**: `contrato` e `linha` (SLA, reajuste, horários, veículo e motorista padrão) são tabelas da gestão, ao lado de veículo, escala e viagem. O contrato guarda a ligação com o `OmieContrato` (código da Omie) e com o cliente por CNPJ; a controladoria lê o contrato da gestão para faturamento e margem.
 **Consequência**: a rota deixa de ser só texto em `Escala.routeName`; a escala do SIAT passa a casar com uma linha cadastrada.

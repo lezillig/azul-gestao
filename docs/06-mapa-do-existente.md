@@ -161,3 +161,18 @@ Encontrados na primeira importação; nenhum deles é corrigido pelo sistema.
   quitação da cota"** e o do Itaú, **"gravame - baixa automática"**: duas
   rotinas que hoje dependem de alguém lembrar.
 
+## Cadastro único do veículo por área (16/10/2026)
+
+Implementado no PR lezillig/gestao-motoristas#5 (ADR-010), aguardando merge.
+Primeira leitura com a planilha de controle real (222 veículos ativos): **152
+aptos a operar**; o que mais falta, por área:
+
+- Documentação: 48 tacógrafos "preliminar", 42 sem tipo de operação (as 19
+  UNIDADE MÓVEL e as linhas com "-"), 19 sem apólice, 6 EMTU vencidas, 4 CVS
+  vencidos, 3 vistorias semestrais e 3 ATE vencidas.
+- Financeiro: 38 sem nota fiscal de compra, 22 sem data de compra.
+- Frota: 5 sem lugares, 3 sem renavam.
+
+Em aberto: o que "LETRA G / R / E / A" da coluna ADAPTAÇÃO significa (está
+guardado como texto, na Documentação) e a venda como checklist por área.
+
