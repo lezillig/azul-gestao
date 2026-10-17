@@ -8,6 +8,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 >
 > 16/10/2026: PR lezillig/gestao-motoristas#5 em produção (trilha, pendências, veículo com ficha por área — ADR-010 —, planilhas de controle e de financiamentos, cliente por CNPJ, contrato e linha).
 > 17/10/2026: PR lezillig/gestao-motoristas#6 em produção (baixa da venda por área; agentes de vencimentos, escala com veículo impedido, prazos de multa, ponto/jornada, desvio de combustível e preventiva; horas extras e pontualidade por cliente). Primeira rodada dos agentes: 18/10, entre 06:15 e 06:55.
+> 17/10/2026: PR lezillig/gestao-motoristas#7 em produção (preventiva com a conta da tela de Manutenção; plano por tipo de veículo para freios, pneus e correia).
 
 - [x] Decidir stack definitiva (ADR-002): herdar Next.js + Prisma da gestão e da controladoria.
 - [x] Banco, migrações e deploy: já existem (Neon, Prisma, Vercel).
