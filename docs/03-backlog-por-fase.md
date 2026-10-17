@@ -44,7 +44,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 - [ ] Geração de `viagem` planejada a partir de `linha` + `escala`.
 - [ ] **Agente `monitor_rotas`**: início/fim de viagem, atraso > X min, desvio > Y m, veículo diferente do escalado, parada não prevista → `evento_viagem` + alerta em tempo quase real.
 - [ ] Odômetro diário por veículo (para manutenção e custo/km).
-- [ ] Relatório de pontualidade por linha/contrato (base do SLA).
+- [~] Relatório de pontualidade por cliente (`/telemetria/pontualidade`): saída da viagem da Ituran × horário de saída da escala, tolerância 10 min. Falta: chegada no ponto e desvio de rota, que pedem posições ponto a ponto (a API de viagens da Ituran não entrega trajeto) e `ponto_parada`.
 
 ## Fase 4 — Frota: manutenção, combustível, multas (2–3 semanas) · `specs/05-frota-manutencao.md`
 
