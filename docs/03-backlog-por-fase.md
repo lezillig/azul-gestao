@@ -30,14 +30,14 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 - [x] Catálogo de antecedências do **veículo** (licenças 90d, apólice e tacógrafo 45d, vistoria escolar 30d) — `src/lib/vencimentos.ts` na gestão. CNH e documentos do motorista entram com a ficha do motorista.
 - [x] Carga inicial dos documentos do veículo pela planilha CONTROLE INFORMAÇÕES GERAIS (Fase 0). Apólices Sombrero/ESSOR por PDF: pendente.
 - [x] **Agente `vencimentos`** (diário, `/api/cron/vencimentos`, 06:30 em São Paulo) para o veículo: e-mail à Documentação nos degraus (antecedência do tipo, 60, 30, 7; um aviso por degrau) e pendência para a Documentação no vencimento (apólice = crítica). Escala de veículo com documento vencido: justificativa escrita no formulário e pendência para o gestor nas escalas do SIAT (hoje e amanhã). Falta: os documentos do motorista (CNH já bloqueia a escala desde antes).
-- [~] Relatório "Documentos a vencer": `/cadastros/veiculos/vencimentos` (vencidos, a vencer em 90 dias, ativos sem apólice vigente, filtro por tipo). Falta o recorte por segmento.
+- [~] Relatório "Documentos a vencer": `/cadastros/veiculos/vencimentos` (vencidos, a vencer em 90 dias, ativos sem apólice vigente, filtro por tipo). Recorte por segmento (tipo de operação da ficha): PR lezillig/gestao-motoristas#8.
 
 ## Fase 2 — Ponto e jornada (1–2 semanas) · `specs/03-ponto-jornada.md`
 
 - [x] Sincronização diária de marcações: cliente TiqueTaque da gestão (cron `tiquetaque-import`), não MCP.
-- [x] **Agente `ponto_erros`** (`/api/cron/jornada`, 06:40): escalado sem batida, turno sem saída, batidas que não fecham → e-mail ao gestor; 3 dias com erro em 30 → pendência para a Folha. Falta: e-mail/WhatsApp ao próprio motorista.
+- [x] **Agente `ponto_erros`** (`/api/cron/jornada`, 06:40): escalado sem batida, turno sem saída, batidas que não fecham → e-mail ao gestor; 3 dias com erro em 30 → pendência para a Folha. Falta: aviso ao próprio motorista (WhatsApp exige template novo aprovado na Meta).
 - [x] Cálculo da jornada com a Lei 13.103 e a convenção: já existia em `src/lib/pontoCompliance.ts` e `convencao.ts` (relatório `/ponto/analise`); o agente reaproveita dia a dia.
-- [x] **Agente `jornada_limites`**: hora extra acima de 2h, sem intervalo, interjornada → pendência para a Folha (perfil FOLHA), alta se repete na semana. Falta: descanso semanal no agente diário (está no relatório mensal) e cruzamento com ignição Ituran.
+- [x] **Agente `jornada_limites`**: hora extra acima de 2h, sem intervalo, interjornada → pendência para a Folha (perfil FOLHA), alta se repete na semana. Descanso semanal no agente diário: PR lezillig/gestao-motoristas#8. Falta: cruzamento com ignição Ituran.
 - [x] Relatório: horas extras por motorista/mês (`/ponto/mensal`, já existia) e por cliente (`/ponto/mensal/clientes`, pela escala do dia, com custo da convenção); reincidência de erros vira pendência. Falta: taxa de erro de marcação por equipe.
 
 ## Fase 3 — Operação: rota planejada × realizada (2–3 semanas) · `specs/04-operacao-rotas.md`
