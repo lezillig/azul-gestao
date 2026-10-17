@@ -27,7 +27,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 
 - [x] Catálogo de antecedências do **veículo** (licenças 90d, apólice e tacógrafo 45d, vistoria escolar 30d) — `src/lib/vencimentos.ts` na gestão. CNH e documentos do motorista entram com a ficha do motorista.
 - [x] Carga inicial dos documentos do veículo pela planilha CONTROLE INFORMAÇÕES GERAIS (Fase 0). Apólices Sombrero/ESSOR por PDF: pendente.
-- [x] **Agente `vencimentos`** (diário, `/api/cron/vencimentos`, 06:30 em São Paulo) para o veículo: e-mail à Documentação nos degraus (antecedência do tipo, 60, 30, 7; um aviso por degrau) e pendência para a Documentação no vencimento (apólice = crítica). Falta: o motorista, e o aviso na escala de veículo com documento vencido.
+- [x] **Agente `vencimentos`** (diário, `/api/cron/vencimentos`, 06:30 em São Paulo) para o veículo: e-mail à Documentação nos degraus (antecedência do tipo, 60, 30, 7; um aviso por degrau) e pendência para a Documentação no vencimento (apólice = crítica). Escala de veículo com documento vencido: justificativa escrita no formulário e pendência para o gestor nas escalas do SIAT (hoje e amanhã). Falta: os documentos do motorista (CNH já bloqueia a escala desde antes).
 - [~] Relatório "Documentos a vencer": `/cadastros/veiculos/vencimentos` (vencidos, a vencer em 90 dias, ativos sem apólice vigente, filtro por tipo). Falta o recorte por segmento.
 
 ## Fase 2 — Ponto e jornada (1–2 semanas) · `specs/03-ponto-jornada.md`
