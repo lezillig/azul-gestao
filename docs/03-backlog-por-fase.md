@@ -49,7 +49,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 ## Fase 4 — Frota: manutenção, combustível, multas (2–3 semanas) · `specs/05-frota-manutencao.md`
 
 - [ ] `plano_manutencao` por tipo de veículo; **agente `preventiva`** (km da Ituran × último serviço) → OS sugerida.
-- [ ] Importação de abastecimentos (cartão/planilha); **agente `combustivel`**: consumo km/l por veículo e motorista, desvio > 15% da média → pendência.
+- [x] Importação de abastecimentos (Sofit, Ticket Log e extrato — já existia); **agente `combustivel`** (`/api/cron/combustivel-desvio`): km/l de 30 dias contra a mediana do mesmo modelo e combustível, desvio > 15% → pendência para a Frota, com litros por motorista. Falta: ranking por motorista (hoje vai na evidência).
 - [x] Multas: cadastro e indicação de condutor já vinham da LW; **agente `multas_prazos`** (diário, `/api/cron/multas-prazos`): pendência para o gestor a 7/3/1 dias do prazo de indicação, fechada por quem envia a indicação. Falta: prazo de recurso (a LW não traz em coluna) e desconto em folha → RH.
 - [ ] Pneus (fase 4b, opcional no início).
 
