@@ -49,7 +49,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 
 ## Fase 4 — Frota: manutenção, combustível, multas (2–3 semanas) · `specs/05-frota-manutencao.md`
 
-- [~] **Agente `preventiva`** (`/api/cron/preventiva`): km da Ituran/Sofit × última revisão da Sofit, contra o intervalo do veículo → pendência para a Frota abrir a OS (pula quem já tem OS de revisão aberta). Falta: `plano_manutencao` por tipo de veículo (correia, freios, tacógrafo, extintor por tempo).
+- [x] **Agente `preventiva`** (`/api/cron/preventiva`): km da Ituran/Sofit × última revisão da Sofit, contra o intervalo do veículo → pendência para a Frota abrir a OS (pula quem já tem OS de revisão aberta). Usa a mesma conta da tela `/manutencao` (km ou dias contra o plano da Sofit). `plano_manutencao` por tipo de veículo para freios, pneus e correia em `/manutencao/plano` (PR lezillig/gestao-motoristas#7): intervalo da Frota, última troca pelas OS da Sofit. Tacógrafo e extintor já vêm como vencimento da Sofit e da planilha.
 - [x] Importação de abastecimentos (Sofit, Ticket Log e extrato — já existia); **agente `combustivel`** (`/api/cron/combustivel-desvio`): km/l de 30 dias contra a mediana do mesmo modelo e combustível, desvio > 15% → pendência para a Frota, com litros por motorista. Falta: ranking por motorista (hoje vai na evidência).
 - [x] Multas: cadastro e indicação de condutor já vinham da LW; **agente `multas_prazos`** (diário, `/api/cron/multas-prazos`): pendência para o gestor a 7/3/1 dias do prazo de indicação, fechada por quem envia a indicação. Falta: prazo de recurso (a LW não traz em coluna) e desconto em folha → RH.
 - [ ] Pneus (fase 4b, opcional no início).
