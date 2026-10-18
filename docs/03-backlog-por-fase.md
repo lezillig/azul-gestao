@@ -8,6 +8,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 >
 > 16/10/2026: PR lezillig/gestao-motoristas#5 em produção (trilha, pendências, veículo com ficha por área — ADR-010 —, planilhas de controle e de financiamentos, cliente por CNPJ, contrato e linha).
 > 17/10/2026: PR lezillig/gestao-motoristas#6 em produção (baixa da venda por área; agentes de vencimentos, escala com veículo impedido, prazos de multa, ponto/jornada, desvio de combustível e preventiva; horas extras e pontualidade por cliente). Primeira rodada dos agentes: 18/10, entre 06:15 e 06:55.
+> 18/10/2026: PR lezillig/gestao-motoristas#8 em produção (folga semanal no agente de jornada; vencimentos por segmento).
 > 17/10/2026: PR lezillig/gestao-motoristas#7 em produção (preventiva com a conta da tela de Manutenção; plano por tipo de veículo para freios, pneus e correia).
 
 - [x] Decidir stack definitiva (ADR-002): herdar Next.js + Prisma da gestão e da controladoria.
@@ -68,8 +69,8 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 ## Fase 6 — Comercial e licitações (2 semanas) · `specs/07-comercial-licitacoes.md`
 
 - [ ] **Agente `radar_pncp`**: busca diária por objeto/UF, grava em `comercial.licitacao`, alerta prazos de proposta e recurso.
-- [ ] Reajustes contratuais: **agente `reajustes`** avisa 60 dias antes da data-base.
-- [ ] Vigências: contratos a vencer em 180/90/30 dias.
+- [x] Reajustes contratuais: **agente `reajustes`** (`/api/cron/contratos`) abre pendência para o Financeiro 60 dias antes da data-base (PR lezillig/gestao-motoristas#9).
+- [x] Vigências: contratos a vencer em 180/90/30 dias, ou vigentes com o fim passado → pendência para o gestor (PR lezillig/gestao-motoristas#9).
 - [ ] Pipeline comercial simples (status por licitação/proposta).
 
 ## Fase 7 — Auditoria e governança contínua · `specs/08-auditoria-governanca.md`
