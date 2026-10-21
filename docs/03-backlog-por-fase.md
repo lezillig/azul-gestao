@@ -8,6 +8,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 >
 > 16/10/2026: PR lezillig/gestao-motoristas#5 em produção (trilha, pendências, veículo com ficha por área — ADR-010 —, planilhas de controle e de financiamentos, cliente por CNPJ, contrato e linha).
 > 17/10/2026: PR lezillig/gestao-motoristas#6 em produção (baixa da venda por área; agentes de vencimentos, escala com veículo impedido, prazos de multa, ponto/jornada, desvio de combustível e preventiva; horas extras e pontualidade por cliente). Primeira rodada dos agentes: 18/10, entre 06:15 e 06:55.
+> 21/10/2026: PR lezillig/gestao-motoristas#9 em produção (agentes de vigência e reajuste de contratos).
 > 18/10/2026: PR lezillig/gestao-motoristas#8 em produção (folga semanal no agente de jornada; vencimentos por segmento).
 > 17/10/2026: PR lezillig/gestao-motoristas#7 em produção (preventiva com a conta da tela de Manutenção; plano por tipo de veículo para freios, pneus e correia).
 
