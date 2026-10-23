@@ -9,6 +9,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 > 16/10/2026: PR lezillig/gestao-motoristas#5 em produção (trilha, pendências, veículo com ficha por área — ADR-010 —, planilhas de controle e de financiamentos, cliente por CNPJ, contrato e linha).
 > 17/10/2026: PR lezillig/gestao-motoristas#6 em produção (baixa da venda por área; agentes de vencimentos, escala com veículo impedido, prazos de multa, ponto/jornada, desvio de combustível e preventiva; horas extras e pontualidade por cliente). Primeira rodada dos agentes: 18/10, entre 06:15 e 06:55.
 > 21/10/2026: PR lezillig/gestao-motoristas#9 em produção (agentes de vigência e reajuste de contratos).
+> 23/10/2026: PRs lezillig/gestao-motoristas#10 e lezillig/controladoria#1 em produção (contratos da Omie: a controladoria exporta o CSV, a gestão importa em Cadastros › Contratos › Importar da Omie).
 > 18/10/2026: PR lezillig/gestao-motoristas#8 em produção (folga semanal no agente de jornada; vencimentos por segmento).
 > 17/10/2026: PR lezillig/gestao-motoristas#7 em produção (preventiva com a conta da tela de Manutenção; plano por tipo de veículo para freios, pneus e correia).
 
@@ -20,6 +21,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 - [x] Financiamento por veículo, importado de "Consórcios e Financiamentos".
 - [ ] Cliente e fornecedor por CNPJ (cliente feito em 16/10/2026; falta fornecedor e o casamento com o `OmieParceiro` na controladoria), ligando `Cliente` (gestão) ao `OmieParceiro` (controladoria).
 - [x] Contrato operacional e linha na gestão (ADR-009): SLA, reajuste, horário, veículo e motorista padrão, ligados ao `OmieContrato` e às rotas do SIAT.
+- [x] Carga dos contratos a partir da Omie: CSV exportado pela controladoria e importado na gestão (simular → aplicar), sem escrita entre bancos (ADR-001).
 - [ ] Separar os bancos (ADR-001): executar `controladoria/docs/separar-bancos.md`, com papel somente leitura da controladoria no banco da gestão.
 - [ ] Cadastro de pessoa além do motorista (monitor, mecânico, administrativo).
 - [ ] Centro de custo por veículo e contrato, alinhado ao `CentroCusto` que a controladoria já mantém.
