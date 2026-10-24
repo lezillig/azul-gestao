@@ -11,6 +11,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 > 21/10/2026: PR lezillig/gestao-motoristas#9 em produção (agentes de vigência e reajuste de contratos).
 > 23/10/2026: PRs lezillig/gestao-motoristas#10 e lezillig/controladoria#1 em produção (contratos da Omie: a controladoria exporta o CSV, a gestão importa em Cadastros › Contratos › Importar da Omie).
 > 24/10/2026: PR lezillig/gestao-motoristas#11 em produção (diagnóstico do histórico de posições da Ituran em /telemetria/ituran-historico; aguarda o resultado para a Fase 3).
+> 24/10/2026: PR lezillig/gestao-motoristas#12 em produção (trajeto ponto a ponto da Ituran; desvio de rota aprendido por rota do SIAT; batida do TiqueTaque longe do veículo escalado).
 > 18/10/2026: PR lezillig/gestao-motoristas#8 em produção (folga semanal no agente de jornada; vencimentos por segmento).
 > 17/10/2026: PR lezillig/gestao-motoristas#7 em produção (preventiva com a conta da tela de Manutenção; plano por tipo de veículo para freios, pneus e correia).
 
@@ -47,11 +48,13 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 
 ## Fase 3 — Operação: rota planejada × realizada (2–3 semanas) · `specs/04-operacao-rotas.md`
 
-- [ ] Ingestão de posições Ituran (a cada 5 min) → `operacao.posicao`.
+- [~] Posições Ituran: trajeto ponto a ponto de cada viagem (`GET /api/v2/trips/{id}/points`) em `TrajetoViagem`, buscado diariamente pelo cron `ituran-trajetos` (PR lezillig/gestao-motoristas#12). Falta: tempo quase real (hoje D-1).
 - [ ] Geração de `viagem` planejada a partir de `linha` + `escala`.
 - [ ] **Agente `monitor_rotas`**: início/fim de viagem, atraso > X min, desvio > Y m, veículo diferente do escalado, parada não prevista → `evento_viagem` + alerta em tempo quase real.
 - [ ] Odômetro diário por veículo (para manutenção e custo/km).
-- [~] Relatório de pontualidade por cliente (`/telemetria/pontualidade`): saída da viagem da Ituran × horário de saída da escala, tolerância 10 min. Falta: chegada no ponto e desvio de rota, que pedem posições ponto a ponto (a API de viagens da Ituran não entrega trajeto) e `ponto_parada`.
+- [~] Relatório de pontualidade por cliente (`/telemetria/pontualidade`): saída da viagem da Ituran × horário de saída da escala, tolerância 10 min. Falta: chegada no ponto, que pede `ponto_parada` (paradas do Easy Course — aguardando acesso ou exportação).
+- [x] Desvio de rota sem cadastro: caminho habitual aprendido por rota e cliente do SIAT (30 dias, mínimo 5 viagens), trecho fora com ≥ 1 km ou 5 min (`/telemetria/desvios`, PR lezillig/gestao-motoristas#12). Falta: calibrar com casos reais e virar pendência.
+- [x] Batida de ponto (TiqueTaque, local do app) longe do veículo escalado naquele horário, ≥ 1 km (`/telemetria/desvios`).
 
 ## Fase 4 — Frota: manutenção, combustível, multas (2–3 semanas) · `specs/05-frota-manutencao.md`
 
