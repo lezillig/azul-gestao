@@ -12,7 +12,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 > 23/10/2026: PRs lezillig/gestao-motoristas#10 e lezillig/controladoria#1 em produção (contratos da Omie: a controladoria exporta o CSV, a gestão importa em Cadastros › Contratos › Importar da Omie).
 > 24/10/2026: PR lezillig/gestao-motoristas#11 em produção (diagnóstico do histórico de posições da Ituran em /telemetria/ituran-historico; aguarda o resultado para a Fase 3).
 > 24/10/2026: PR lezillig/gestao-motoristas#12 em produção (trajeto ponto a ponto da Ituran; desvio de rota aprendido por rota do SIAT; batida do TiqueTaque longe do veículo escalado).
-> 29/10/2026: PR lezillig/gestao-motoristas#13 em produção (veículo trocado sem atualizar a escala; parada fora da rota). PR lezillig/controladoria#2 aberto (radar de licitações do PNCP).
+> 29/10/2026: PR lezillig/gestao-motoristas#13 em produção (veículo trocado sem atualizar a escala; parada fora da rota). PR lezillig/controladoria#2 em produção (radar de licitações do PNCP em Simulador › Radar de licitações).
 > 18/10/2026: PR lezillig/gestao-motoristas#8 em produção (folga semanal no agente de jornada; vencimentos por segmento).
 > 17/10/2026: PR lezillig/gestao-motoristas#7 em produção (preventiva com a conta da tela de Manutenção; plano por tipo de veículo para freios, pneus e correia).
 
@@ -76,7 +76,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 
 ## Fase 6 — Comercial e licitações (2 semanas) · `specs/07-comercial-licitacoes.md`
 
-- [ ] **Agente `radar_pncp`**: busca diária por objeto/UF, grava em `comercial.licitacao`, alerta prazos de proposta e recurso.
+- [~] **Agente `radar_pncp`** (controladoria, PR lezillig/controladoria#2): busca diária às 07:50 das publicações do PNCP (UFs em `RADAR_PNCP_UFS`, padrão SP), aderência por regra escrita, tela com prazo de proposta e "abrir estudo". Falta: e-mail diário, prazo de recurso e leitura do edital por IA no radar.
 - [x] Reajustes contratuais: **agente `reajustes`** (`/api/cron/contratos`) abre pendência para o Financeiro 60 dias antes da data-base (PR lezillig/gestao-motoristas#9).
 - [x] Vigências: contratos a vencer em 180/90/30 dias, ou vigentes com o fim passado → pendência para o gestor (PR lezillig/gestao-motoristas#9).
 - [ ] Pipeline comercial simples (status por licitação/proposta).
