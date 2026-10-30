@@ -13,6 +13,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 > 24/10/2026: PR lezillig/gestao-motoristas#11 em produção (diagnóstico do histórico de posições da Ituran em /telemetria/ituran-historico; aguarda o resultado para a Fase 3).
 > 24/10/2026: PR lezillig/gestao-motoristas#12 em produção (trajeto ponto a ponto da Ituran; desvio de rota aprendido por rota do SIAT; batida do TiqueTaque longe do veículo escalado).
 > 29/10/2026: PR lezillig/gestao-motoristas#13 em produção (veículo trocado sem atualizar a escala; parada fora da rota). PR lezillig/controladoria#2 em produção (radar de licitações do PNCP em Simulador › Radar de licitações).
+> 30/10/2026: PR lezillig/gestao-motoristas#15 em produção (anexos dos documentos do veículo). PR lezillig/controladoria#3 aberto (cliente por CNPJ, centro de custo por placa/contrato, custo de propriedade por veículo, e-mail do radar).
 > 18/10/2026: PR lezillig/gestao-motoristas#8 em produção (folga semanal no agente de jornada; vencimentos por segmento).
 > 17/10/2026: PR lezillig/gestao-motoristas#7 em produção (preventiva com a conta da tela de Manutenção; plano por tipo de veículo para freios, pneus e correia).
 
@@ -22,12 +23,12 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 - [x] Fila única de pendências com perfil aprovador (quem cria ≠ quem aprova); multas e folha passam a gerar entradas nela.
 - [x] `Vehicle` completo (renavam, chassi, categoria de uso, compra/venda, status `VENDIDO`); importar "CONTROLE INFORMAÇÕES GERAIS" (FROTA ATIVA + VENDIDOS); relatório de divergências com a Ituran como referência (ADR-008).
 - [x] Financiamento por veículo, importado de "Consórcios e Financiamentos".
-- [ ] Cliente e fornecedor por CNPJ (cliente feito em 16/10/2026; falta fornecedor e o casamento com o `OmieParceiro` na controladoria), ligando `Cliente` (gestão) ao `OmieParceiro` (controladoria).
+- [~] Cliente e fornecedor por CNPJ: cliente casado com o `OmieParceiro` pelo CNPJ, receita sem de-para vai ao contrato (PR lezillig/controladoria#3). Fornecedor continua como `OmieParceiro` na controladoria; cadastro próprio na gestão só se alguma tela da gestão precisar.
 - [x] Contrato operacional e linha na gestão (ADR-009): SLA, reajuste, horário, veículo e motorista padrão, ligados ao `OmieContrato` e às rotas do SIAT.
 - [x] Carga dos contratos a partir da Omie: CSV exportado pela controladoria e importado na gestão (simular → aplicar), sem escrita entre bancos (ADR-001).
 - [ ] Separar os bancos (ADR-001): executar `controladoria/docs/separar-bancos.md`, com papel somente leitura da controladoria no banco da gestão.
 - [ ] Cadastro de pessoa além do motorista (monitor, mecânico, administrativo).
-- [ ] Centro de custo por veículo e contrato, alinhado ao `CentroCusto` que a controladoria já mantém.
+- [~] Centro de custo por veículo e contrato: departamento ou projeto da Omie com a placa ou o número do contrato no nome vai sozinho para o veículo ou o contrato; quadro de conferência em Rentabilidade (PR lezillig/controladoria#3). Falta: o financeiro batizar os departamentos na Omie.
 - [x] Clientes de Omie, Ituran e ponto (TiqueTaque): já existem em TypeScript. MCP em revisão (ADR-003).
 
 **Pronto quando**: toda placa ativa da Ituran existe em `Vehicle`, e o que sobra no SIAT, Sofit ou planilha está listado como divergência; toda alteração de cadastro aparece na trilha com antes/depois; uma pendência pode ser criada, aprovada por outra pessoa e aparece na trilha.
@@ -68,7 +69,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 
 - [ ] Sincronização diária Omie → `financeiro.lancamento` (com centro de custo).
 - [ ] Views `custo_veiculo_mes` e `margem_contrato_mes`.
-- [ ] Depreciação e financiamento alocados por veículo.
+- [~] Depreciação e financiamento alocados por veículo: custo de propriedade em Rentabilidade, com premissas do simulador e a planilha de financiamentos (PR lezillig/controladoria#3). Falta: cadastrar valor e data de compra dos veículos sem esses dados.
 - [ ] **Agente `contas_pagar_inbox`** (contasapagar@): lê e-mail/NF, extrai dados, valida contra OS/abastecimento/contrato, propõe lançamento na Omie → pendência para financeiro.
 - [ ] **Agente `conciliacao`** (semanal): Omie × extrato; combustível × km; horas × escala.
 - [ ] Dashboard gerencial: custo/km, margem por contrato, DRE gerencial.
@@ -84,8 +85,8 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 ## Fase 7 — Auditoria e governança contínua · `specs/08-auditoria-governanca.md`
 
 - [ ] **Agente `relatorio_semanal`**: resumo em texto + números para a diretoria (segunda-feira, 7h).
-- [ ] Trilha de auditoria consultável (quem alterou o quê, por período).
-- [ ] Segregação de funções nas pendências (quem cria ≠ quem aprova).
+- [x] Trilha de auditoria consultável (quem alterou o quê, por período): `/auditoria` na gestão.
+- [x] Segregação de funções nas pendências (quem cria ≠ quem aprova): regra da fila desde a Fase 0.
 - [ ] Backups testados; rotina mensal de restauração.
 - [ ] Revisão trimestral de regras dos agentes (thresholds) com base em falsos positivos.
 
