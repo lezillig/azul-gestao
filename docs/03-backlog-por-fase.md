@@ -2,6 +2,8 @@
 
 Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` ao concluir. Cada item aponta a spec; os critérios de pronto detalhados estão lá.
 
+**Desde 30/10/2026 há duas frentes escrevendo no código** (este plano e o módulo de veículos de `gestao-motoristas/docs/handoff-veiculos.md`). Quem é dono de cada item está em `docs/07-divisao-de-trabalho.md`: a Fase 4 inteira, o odômetro diário e os documentos do veículo passaram para a frente Veículos.
+
 ## Fase 0 — Fundação (2–3 semanas) · `specs/01-cadastro-mestre.md`
 
 > Revisada em 15/10/2026: boa parte desta fase já existe na gestão e na controladoria. Situação item a item em `docs/06-mapa-do-existente.md`.
@@ -53,12 +55,14 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 - [~] Posições Ituran: trajeto ponto a ponto de cada viagem (`GET /api/v2/trips/{id}/points`) em `TrajetoViagem`, buscado diariamente pelo cron `ituran-trajetos` (PR lezillig/gestao-motoristas#12). Falta: tempo quase real (hoje D-1).
 - [ ] Geração de `viagem` planejada a partir de `linha` + `escala`.
 - [~] **Agente `monitor_rotas`** (D-1 em `/telemetria/desvios`: desvio de rota, veículo trocado, parada fora da rota; falta tempo quase real e virar pendência): início/fim de viagem, atraso > X min, desvio > Y m, veículo diferente do escalado, parada não prevista → `evento_viagem` + alerta em tempo quase real.
-- [ ] Odômetro diário por veículo (para manutenção e custo/km).
+- [ ] Odômetro diário por veículo (para manutenção e custo/km). **Dono: frente Veículos** (km/dia do handoff; ver docs/07).
 - [~] Relatório de pontualidade por cliente (`/telemetria/pontualidade`): saída da viagem da Ituran × horário de saída da escala, tolerância 10 min. Falta: chegada no ponto, que pede `ponto_parada` (paradas do Easy Course — aguardando acesso ou exportação).
 - [x] Desvio de rota sem cadastro: caminho habitual aprendido por rota e cliente do SIAT (30 dias, mínimo 5 viagens), trecho fora com ≥ 1 km ou 5 min (`/telemetria/desvios`, PR lezillig/gestao-motoristas#12). Falta: calibrar com casos reais e virar pendência.
 - [x] Batida de ponto (TiqueTaque, local do app) longe do veículo escalado naquele horário, ≥ 1 km (`/telemetria/desvios`).
 
 ## Fase 4 — Frota: manutenção, combustível, multas (2–3 semanas) · `specs/05-frota-manutencao.md`
+
+> Dono desde 30/10/2026: **frente Veículos** (`gestao-motoristas/docs/handoff-veiculos.md`). Os agentes abaixo nasceram aqui e passam a ser evoluídos por ela.
 
 - [x] **Agente `preventiva`** (`/api/cron/preventiva`): km da Ituran/Sofit × última revisão da Sofit, contra o intervalo do veículo → pendência para a Frota abrir a OS (pula quem já tem OS de revisão aberta). Usa a mesma conta da tela `/manutencao` (km ou dias contra o plano da Sofit). `plano_manutencao` por tipo de veículo para freios, pneus e correia em `/manutencao/plano` (PR lezillig/gestao-motoristas#7): intervalo da Frota, última troca pelas OS da Sofit. Tacógrafo e extintor já vêm como vencimento da Sofit e da planilha.
 - [x] Importação de abastecimentos (Sofit, Ticket Log e extrato — já existia); **agente `combustivel`** (`/api/cron/combustivel-desvio`): km/l de 30 dias contra a mediana do mesmo modelo e combustível, desvio > 15% → pendência para a Frota, com litros por motorista. Falta: ranking por motorista (hoje vai na evidência).

@@ -24,6 +24,7 @@ Leia este arquivo inteiro antes de qualquer tarefa. Depois leia a spec do módul
 | `specs/01..08-*.md` | Uma spec por módulo (requisitos, regras, dados, agentes, relatórios, critérios de pronto) |
 | `db/schema.sql` | Modelo de referência por domínio (não é aplicado; ver Stack) |
 | `docs/06-mapa-do-existente.md` | O que a gestão e a controladoria já têm, item por item da Fase 0 |
+| `docs/07-divisao-de-trabalho.md` | Quem é dono de cada assunto entre este plano e o módulo de veículos (`gestao-motoristas/docs/handoff-veiculos.md`). Ler antes de começar qualquer item |
 | `agents/_template.py`, `agents/config.yaml` | Referência do padrão de agente e dos thresholds |
 
 ## Stack (decidida em 15/10/2026 — ADR-002)
