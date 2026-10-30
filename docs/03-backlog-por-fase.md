@@ -13,7 +13,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 > 24/10/2026: PR lezillig/gestao-motoristas#11 em produção (diagnóstico do histórico de posições da Ituran em /telemetria/ituran-historico; aguarda o resultado para a Fase 3).
 > 24/10/2026: PR lezillig/gestao-motoristas#12 em produção (trajeto ponto a ponto da Ituran; desvio de rota aprendido por rota do SIAT; batida do TiqueTaque longe do veículo escalado).
 > 29/10/2026: PR lezillig/gestao-motoristas#13 em produção (veículo trocado sem atualizar a escala; parada fora da rota). PR lezillig/controladoria#2 em produção (radar de licitações do PNCP em Simulador › Radar de licitações).
-> 30/10/2026: PR lezillig/gestao-motoristas#15 em produção (anexos dos documentos do veículo). PR lezillig/controladoria#3 aberto (cliente por CNPJ, centro de custo por placa/contrato, custo de propriedade por veículo, e-mail do radar).
+> 30/10/2026: PR lezillig/gestao-motoristas#15 em produção (anexos dos documentos do veículo). PR lezillig/controladoria#3 em produção (cliente por CNPJ, centro de custo por placa/contrato, custo de propriedade por veículo, e-mail do radar).
 > 18/10/2026: PR lezillig/gestao-motoristas#8 em produção (folga semanal no agente de jornada; vencimentos por segmento).
 > 17/10/2026: PR lezillig/gestao-motoristas#7 em produção (preventiva com a conta da tela de Manutenção; plano por tipo de veículo para freios, pneus e correia).
 
