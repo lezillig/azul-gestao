@@ -9,6 +9,12 @@
 >   módulo de veículos do blueprint de frotas (3 ondas, substituir Sofit, LW e
 >   as planilhas da frota).
 >
+> - **Frente Plataforma** — `controladoria/docs/plataforma/README.md`: a
+>   "plataforma única" sobre a controladoria (cadastro mestre `Cad*`,
+>   `AudLog`, `AudPendencia`, integração com a gestão por `/api/integracao/*`),
+>   seguindo a **Opção A** decidida em 30/10/2026: a gestão é dona da
+>   operação; a controladoria, do financeiro e da Omie.
+>
 > Este documento diz quem é dono de quê, o que cada frente lê da outra e o que
 > ainda precisa de decisão. Antes de começar qualquer item, conferir aqui; se
 > o item não estiver na tabela, combinar antes de escrever.
@@ -56,6 +62,17 @@
 - **Veículos lê do Plano:** escalas e viagens (`Escala`, `VehicleTrip`,
   `TrajetoViagem`) para condutor da multa, utilização e km; contratos
   (`Contrato`) para a exigência de idade e documento por operação; pendências.
+
+## Frente Plataforma (controladoria) — o que já fez do backlog
+
+Sem duplicar com as outras duas, a Plataforma entregou na controladoria: o
+relatório de segunda para a diretoria ("a semana em revista", Fase 7), a
+trilha de alterações consultável (Fase 7), o custo de propriedade com juros e
+multas e o custo por km por veículo (Fase 5), a conferência dos
+financiamentos da gestão nas contas a pagar da Omie e a nota de compra do
+veículo. Contratos e linhas no cadastro mestre (`CadContrato`) estão em espera
+a pedido. A partir daqui, item da Fase 5 e da Fase 7 na controladoria se
+combina com ela antes de começar.
 
 ## Decisões em aberto (para o Leandro)
 

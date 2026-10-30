@@ -88,7 +88,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 
 ## Fase 7 — Auditoria e governança contínua · `specs/08-auditoria-governanca.md`
 
-- [ ] **Agente `relatorio_semanal`**: resumo em texto + números para a diretoria (segunda-feira, 7h).
+- [x] **Agente `relatorio_semanal`**: resumo em texto + números para a diretoria (segunda-feira, 7h). Feito pela frente Plataforma na controladoria ("a semana em revista").
 - [x] Trilha de auditoria consultável (quem alterou o quê, por período): `/auditoria` na gestão.
 - [x] Segregação de funções nas pendências (quem cria ≠ quem aprova): regra da fila desde a Fase 0.
 - [ ] Backups testados; rotina mensal de restauração.
