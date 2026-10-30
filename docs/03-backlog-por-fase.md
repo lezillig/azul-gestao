@@ -75,7 +75,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 - [ ] Views `custo_veiculo_mes` e `margem_contrato_mes`.
 - [~] Depreciação e financiamento alocados por veículo: custo de propriedade em Rentabilidade, com premissas do simulador e a planilha de financiamentos (PR lezillig/controladoria#3). Falta: cadastrar valor e data de compra dos veículos sem esses dados.
 - [ ] **Agente `contas_pagar_inbox`** (contasapagar@): lê e-mail/NF, extrai dados, valida contra OS/abastecimento/contrato, propõe lançamento na Omie → pendência para financeiro.
-- [ ] **Agente `conciliacao`** (semanal): Omie × extrato; combustível × km; horas × escala.
+- [~] **Agente `conciliacao`** (semanal): Omie × extrato (controladoria › Conciliação bancária), combustível × km (custo por km, frente Veículos/Plataforma) e horas × escala (gestão › Ponto x Escala e Auditoria ponto x viagem) existem como telas. Falta, se fizer falta: um resumo semanal único, que pode entrar no relatório de segunda da Plataforma.
 - [ ] Dashboard gerencial: custo/km, margem por contrato, DRE gerencial.
 - [ ] Integrar simulador de custos: `comercial.proposta.composicao_custos` alimentada pelos custos reais.
 
@@ -84,7 +84,7 @@ Ordem definida por valor ÷ esforço e por dependência de dados. Marcar `[x]` a
 - [~] **Agente `radar_pncp`** (controladoria, PR lezillig/controladoria#2): busca diária às 07:50 das publicações do PNCP (UFs em `RADAR_PNCP_UFS`, padrão SP), aderência por regra escrita, tela com prazo de proposta e "abrir estudo". Falta: e-mail diário, prazo de recurso e leitura do edital por IA no radar.
 - [x] Reajustes contratuais: **agente `reajustes`** (`/api/cron/contratos`) abre pendência para o Financeiro 60 dias antes da data-base (PR lezillig/gestao-motoristas#9).
 - [x] Vigências: contratos a vencer em 180/90/30 dias, ou vigentes com o fim passado → pendência para o gestor (PR lezillig/gestao-motoristas#9).
-- [ ] Pipeline comercial simples (status por licitação/proposta).
+- [x] Pipeline comercial simples (status por licitação/proposta): radar (nova → em análise → participando/descartada) e estudos do simulador (em estudo → proposta enviada → ganho/perdido), com taxa de vitória no histórico de editais (controladoria).
 
 ## Fase 7 — Auditoria e governança contínua · `specs/08-auditoria-governanca.md`
 
